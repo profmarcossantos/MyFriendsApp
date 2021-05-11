@@ -23,3 +23,20 @@ export const login = (email, senha, lembreme) => {
             })
     })
 }
+
+
+export const cadastro = (email, senha) => {
+
+    return new Promise((resolve, reject) => {
+
+        firebase.auth().createUserWithEmailAndPassword(email, senha)
+            .then(() => {
+                resolve()
+            })
+            .catch((erro) => {
+                reject(erro.message)
+            });
+    })
+
+
+}

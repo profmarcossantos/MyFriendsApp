@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect } from 'react'
-import { StyleSheet, Text, View, Button, CheckBox } from 'react-native'
+import { StyleSheet, Text, View, Button, CheckBox, TouchableOpacity } from 'react-native'
 import Input from '../components/Input'
 import * as LoginService from '../services/LoginService'
 import { AsyncStorage } from "react-native"
@@ -71,6 +71,14 @@ export default function Login(props) {
                     onPress={validarCredenciais}
                 />
             </View>
+            <View style={{ marginTop: 5 }}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={()=> navigation.navigate("Registro")}
+                >
+                    <Text>Não possui Cadastro? Clique aqui.</Text>
+                </TouchableOpacity>
+            </View>
 
 
         </View>
@@ -93,5 +101,9 @@ const styles = StyleSheet.create({
         alignSelf: "center",
     }, label: {
         margin: 8,
+    }, button: {
+        alignItems: "center",
+        backgroundColor: "#DDDDDD",
+        padding: 10
     },
 })

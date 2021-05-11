@@ -4,9 +4,16 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import Login from './src/views/Login'
 import Menu from './src/views/Menu'
+import Registro from './src/views/Registro'
+import CadastroAmigo from './src/views/CadastroAmigo'
 import "./src/services/ConnectFirebase"
+import { LogBox } from 'react-native'
+
+
 
 export default function App() {
+  LogBox.ignoreLogs(['Setting a timer'])
+
   const Stack = createStackNavigator()
 
   return (
@@ -20,6 +27,15 @@ export default function App() {
           name="Menu"
           component={Menu}
         />
+        <Stack.Screen
+          name="Registro"
+          component={Registro}
+        />
+        <Stack.Screen
+          name="CadastroAmigo"
+          component={CadastroAmigo}
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
