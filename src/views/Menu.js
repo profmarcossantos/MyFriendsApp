@@ -1,8 +1,34 @@
-import React from 'react'
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native'
-
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, View, Button, TouchableOpacity, FlatList } from 'react-native'
+import * as AmigoService from '../services/AmigoService'
 export default function Menu(props) {
     const { navigation } = props
+
+    const [amigos, setAmigos] = useState([])
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            getAmigos()
+        });
+        return unsubscribe;
+    }, [navigation])
+
+    const getAmigos = () => {
+        AmigoService.get()
+            .then(dados => {
+                setAmigos(dados)
+            })
+            .catch(erro => console.log(erro))
+    }
+
+    const deletar = (id) => {
+        AmigoService.del(id)
+            .then(() => {
+                getAmigos()
+            })
+            .catch(erro => console.log(erro))
+    }
+
 
     return (
         <View>
@@ -19,6 +45,27 @@ export default function Menu(props) {
 
             </View>
 
+            <View>
+                <FlatList
+                    data={amigos}
+                    renderItem={({ item }) =>
+                        <View>
+                            <View style={{ width: 100 }}>
+                                <Button title="Delete" onPress={() => deletar(item.id)} />
+                            </View>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate("CadastroAmigo", item)}
+                            >
+                                <Text>
+                                    {`${item.nome} ${item.fone}  `}
+                                </Text>
+                            </TouchableOpacity>
+
+                        </View>
+                    }
+                    keyExtractor={item => item.id}
+                />
+            </View>
 
             <View>
                 <Button

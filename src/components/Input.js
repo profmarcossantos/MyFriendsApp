@@ -9,7 +9,7 @@ export default function Input(props) {
                 placeholder={props.label}
                 secureTextEntry={props.seguro}
                 value={props.value}
-                onChangeText={value => props.setValue(value)}
+                onChangeText={value => props.name ? props.setValue({ [props.name]: value }) : props.setValue(value)}
                 keyboardType={props.keyboardType}
             />
         </View>

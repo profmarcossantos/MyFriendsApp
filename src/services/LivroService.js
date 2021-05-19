@@ -1,6 +1,6 @@
 import db from "../services/ConnectFirebase"
 
-const colletion = "amigos"
+const colletion = "livros"
 export const save = (param) => {
     /*
     amigo = {

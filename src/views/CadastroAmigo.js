@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
 import Input from '../components/Input'
 import * as AmigoService from '../services/AmigoService'
@@ -6,25 +6,38 @@ import * as AmigoService from '../services/AmigoService'
 export default function CadastroAmigo(props) {
 
     const { navigation } = props
-    const [nome, setNome] = useState("")
-    const [fone, setFone] = useState("")
-    const [endereco, setEndereco] = useState("")
+
+
     const [msg, setMsg] = useState("")
+    const [form, setForm] = useState({
+        nome: "",
+        fone: "",
+        endereco: ""
+    })
+
+    // field = { nome: "João das Coves" }, {fone: "54 9999999"}, {endereco: 'Rua Lá mesmo, 296"}
+    const atualizaForm = (field) => setForm(oldValue => Object.assign({}, oldValue, field))
+
+
+    useLayoutEffect(() => {
+        const dados = props.route.params
+        if (dados) setForm(dados)
+
+
+    }, [])
 
     const validar = () => {
-        if ((nome.length == 0) || (fone.length == 0) || (endereco.length == 0))
-            return false
-        else
-            return true
+        let campos = Object.getOwnPropertyNames(form)
+        for (const campo of campos) {
+            if (form[campo] == "" || form[campo] == null)
+                return false
+        }
+        return true
     }
 
     const cadastrar = () => {
-
         if (validar()) {
-            let amigo = {
-                nome, fone, endereco
-            }
-            AmigoService.cadastrarAmigo(amigo)
+            AmigoService.save(form)
                 .then(() => {
                     navigation.navigate("Menu")
                 })
@@ -44,18 +57,21 @@ export default function CadastroAmigo(props) {
             <Text>Informe os dados de seu amigo:</Text>
             <Input
                 label="Nome"
-                value={nome}
-                setValue={setNome}
+                value={form.nome}
+                setValue={atualizaForm}
+                name="nome"
             />
             <Input
                 label="Fone"
-                value={fone}
-                setValue={setFone}
+                value={form.fone}
+                setValue={atualizaForm}
+                name="fone"
             />
             <Input
                 label="Endereço"
-                value={endereco}
-                setValue={setEndereco}
+                value={form.endereco}
+                setValue={atualizaForm}
+                name="endereco"
             />
             <View style={{ marginTop: 5, width: "80%" }}>
                 <Button
