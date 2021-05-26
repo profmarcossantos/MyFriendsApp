@@ -1,28 +1,27 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
 import Input from '../components/Input'
-import * as LoginService from '../services/LoginService'
+import * as LoginAction from '../services/actions/loginAction'
+import { useSelector, useDispatch } from 'react-redux'
 
 export default function Registro(props) {
     const { navigation } = props
-    
+    const dispatch = useDispatch()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [msg, setMsg] = useState('')
 
-    const cadastro = () => {
-
-        LoginService.cadastro(email, password)
-            .then(() => {
-                navigation.replace("Menu")
-            }).catch(erro => {
-                setMsg(erro)
-            })
-
-
+    const cadastro = async () => {
+        try {
+            await dispatch(LoginAction.save(email, password))
+            navigation.replace("Menu")
+        } catch (error) {
+            setMsg(erro)
+        }
     }
 
     return (
+        
         <View style={styles.container}>
             <Text>Informe suas credenciais abaixo:</Text>
             <Input

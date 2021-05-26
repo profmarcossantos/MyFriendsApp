@@ -1,13 +1,13 @@
 import React, { useState, useLayoutEffect } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
 import Input from '../components/Input'
-import * as AmigoService from '../services/AmigoService'
+import * as AmigoAction from '../services/actions/amigoAction'
+import { useSelector, useDispatch } from 'react-redux'
+
 
 export default function CadastroAmigo(props) {
-
+    const dispatch = useDispatch()
     const { navigation } = props
-
-
     const [msg, setMsg] = useState("")
     const [form, setForm] = useState({
         nome: "",
@@ -35,21 +35,17 @@ export default function CadastroAmigo(props) {
         return true
     }
 
-    const cadastrar = () => {
+    const cadastrar = async () => {
         if (validar()) {
-            AmigoService.save(form)
-                .then(() => {
-                    navigation.navigate("Menu")
-                })
-                .catch((erro) => {
-                    setMsg(erro)
-                })
+            try {
+                await dispatch(AmigoAction.save(form))
+                navigation.navigate("Menu")
+            } catch (error) {
+                setMsg(error)
+            }
         } else {
             setMsg("Algum campo não foi preenchido corretamente!")
         }
-
-
-
     }
 
     return (

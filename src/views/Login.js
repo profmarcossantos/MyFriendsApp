@@ -1,12 +1,15 @@
 import React, { useState, useLayoutEffect } from 'react'
 import { StyleSheet, Text, View, Button, CheckBox, TouchableOpacity } from 'react-native'
 import Input from '../components/Input'
-import * as LoginService from '../services/LoginService'
 import { AsyncStorage } from "react-native"
+import * as LoginAction from '../services/actions/loginAction'
+import { useSelector, useDispatch } from 'react-redux'
+
 
 export default function Login(props) {
 
     const { navigation } = props
+    const dispatch = useDispatch()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [lembreme, setLembreme] = useState(false);
@@ -27,14 +30,13 @@ export default function Login(props) {
 
     }, [])
 
-    const validarCredenciais = () => {
-
-        LoginService.login(email, password, lembreme)
-            .then(() => {
-                navigation.replace("Menu")
-            }).catch(erro => {
-                setMsg(erro)
-            })
+    const validarCredenciais = async () => {
+        try {
+            await dispatch(LoginAction.login(email, password, lembreme))
+            navigation.replace("Menu")
+        } catch (error) {
+            setMsg(error)
+        }
     }
 
     return (
@@ -74,7 +76,7 @@ export default function Login(props) {
             <View style={{ marginTop: 5 }}>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={()=> navigation.navigate("Registro")}
+                    onPress={() => navigation.navigate("Registro")}
                 >
                     <Text>Não possui Cadastro? Clique aqui.</Text>
                 </TouchableOpacity>

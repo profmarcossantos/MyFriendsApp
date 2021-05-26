@@ -1,34 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useLayoutEffect } from 'react'
 import { StyleSheet, Text, View, Button, TouchableOpacity, FlatList } from 'react-native'
-import * as AmigoService from '../services/AmigoService'
+import * as AmigosAction from '../services/actions/amigosAction'
+import * as AmigoAction from '../services/actions/amigoAction'
+import { useSelector, useDispatch } from 'react-redux'
+
 export default function Menu(props) {
     const { navigation } = props
-
-    const [amigos, setAmigos] = useState([])
-
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            getAmigos()
-        });
-        return unsubscribe;
-    }, [navigation])
-
-    const getAmigos = () => {
-        AmigoService.get()
-            .then(dados => {
-                setAmigos(dados)
-            })
-            .catch(erro => console.log(erro))
-    }
+    const dispatch = useDispatch()
+    const amigos = useSelector(store => store.amigos)
+    const user = useSelector(store => store.login)
+    useLayoutEffect(() => {
+        dispatch(AmigosAction.getList())
+    }, [dispatch])
 
     const deletar = (id) => {
-        AmigoService.del(id)
-            .then(() => {
-                getAmigos()
-            })
-            .catch(erro => console.log(erro))
+        dispatch(AmigoAction.remove(id))
     }
-
 
     return (
         <View>
@@ -66,7 +53,9 @@ export default function Menu(props) {
                     keyExtractor={item => item.id}
                 />
             </View>
-
+            <View>
+                <Text>Olá {user.email}, para sair clique no botão abaixo:</Text>
+            </View>
             <View>
                 <Button
                     title="Logoff"
