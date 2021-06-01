@@ -19,16 +19,25 @@ export default function Menu(props) {
 
     return (
         <View>
-            <View style={{ width: "99%", marginBottom: 20 }}>
+            <View style={{ width: "99%", marginBottom: 20, flexDirection: "row" }}>
 
                 <TouchableOpacity
-                    style={styles.button}
+                    style={styles.botaoArea}
                     onPress={() => navigation.navigate("CadastroAmigo")}
                 >
                     <View style={styles.botao}>
                         <Text>Adicionar Amigos + </Text>
                     </View>
                 </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.botaoArea}
+                    onPress={() => navigation.navigate("Mapa")}
+                >
+                    <View style={styles.botao}>
+                        <Text>Ver Mapa </Text>
+                    </View>
+                </TouchableOpacity>
+
 
             </View>
 
@@ -68,7 +77,6 @@ export default function Menu(props) {
 
 const styles = StyleSheet.create({
     botao: {
-        width: "48%",
         marginLeft: 10,
         marginTop: 10,
         height: 100,
@@ -76,5 +84,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         alignItems: "center",
         paddingTop: 40
+    }, botaoArea :{
+        flex: 1,
+        width: "50%"
     }
 })

@@ -15,7 +15,7 @@ export const getList = () => async (dispatch, getState) => {
             payload: lista
         })
     } catch (error) {
-        console.log(error)
+        throw error.message
     }
 
 

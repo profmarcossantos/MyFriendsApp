@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button } from 'react-native'
 import Input from '../components/Input'
 import * as AmigoAction from '../services/actions/amigoAction'
 import { useSelector, useDispatch } from 'react-redux'
-
+import * as Location from "expo-location"
 
 export default function CadastroAmigo(props) {
     const dispatch = useDispatch()
@@ -23,6 +23,16 @@ export default function CadastroAmigo(props) {
         const dados = props.route.params
         if (dados) setForm(dados)
 
+
+        const acesso = async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync()
+            if (status !== 'granted') {
+                setMsg("GPS Não Habilitado")
+                return
+            }
+
+        }
+        acesso()
 
     }, [])
 

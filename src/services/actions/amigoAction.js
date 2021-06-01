@@ -1,5 +1,6 @@
 import db from '../ConnectFirebase'
 import * as AmigosAction from './amigosAction'
+import * as Location from "expo-location"
 
 const colletion = "amigos"
 
@@ -16,7 +17,7 @@ export const get = (id) => async (dispatch, getState) => {
             payload: objeto
         })
     } catch (error) {
-        console.log(error)
+        throw error.message
     }
 }
 
@@ -30,6 +31,14 @@ export const save = (param) => async (dispatch, getState) => {
     try {
         let id = param.id
         delete param.id
+
+        let coordenadas = await Location.geocodeAsync(param.endereco)
+        //Location.geocodeAsync -> devolve um array de coordenadas
+        if (coordenadas.length>0){
+            param.latitude = coordenadas[0].latitude
+            param.longitude = coordenadas[0].longitude
+        }
+
         if (id) {
             await db.collection(colletion).doc(id).update(param)
         } else {
@@ -37,7 +46,7 @@ export const save = (param) => async (dispatch, getState) => {
         }
         return dispatch(AmigosAction.getList())
     } catch (error) {
-        console.log(error)
+        throw error.message
     }
 }
 
@@ -46,6 +55,6 @@ export const remove = (id) => async (dispatch, getState) => {
         await db.collection(colletion).doc(id).delete()
         return dispatch(AmigosAction.getList())
     } catch (error) {
-        console.log(error)
+        throw error.message
     }
 }

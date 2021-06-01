@@ -6,6 +6,7 @@ import Login from './src/views/Login'
 import Menu from './src/views/Menu'
 //import Registro from './src/views/Registro'
 import CadastroAmigo from './src/views/CadastroAmigo'
+import Mapa from './src/views/Mapa'
 import "./src/services/ConnectFirebase"
 import { LogBox } from 'react-native'
 import { Provider as StoreProvider } from 'react-redux'
@@ -32,7 +33,10 @@ export default function App() {
             name="CadastroAmigo"
             component={CadastroAmigo}
           />
-
+          <Stack.Screen
+            name="Mapa"
+            component={Mapa}
+          />
 
 
         </Stack.Navigator>
