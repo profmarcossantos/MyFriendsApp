@@ -201,7 +201,7 @@ export default function Mapa() {
     }
 
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <MapView
                 style={styles.mapStyle}
                 region={pontoInicial}
@@ -248,6 +248,7 @@ const styles = StyleSheet.create({
     mapStyle: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
+        flex: 1
     }
 
 })
